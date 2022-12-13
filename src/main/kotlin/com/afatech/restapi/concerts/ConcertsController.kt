@@ -20,8 +20,9 @@ class ConcertsController(private val concertsRepository: ConcertsRepository) {
     @GetMapping
     fun getAllConcert(): ResponseEntity<ResponseAllConcerts> {
         val concert = concertsRepository.findAll()
-        val responseNotEmpty  = ResponseAllConcerts("Success Get Data", concert)
-        val responseEmpty  = ResponseAllConcerts("Sorry Data Is Empty", concert)
+        val count = concert.count()
+        val responseNotEmpty  = ResponseAllConcerts("Success Get Data", count,concert)
+        val responseEmpty  = ResponseAllConcerts("Sorry Data Is Empty", count)
 
         return if (concert.isNotEmpty()) ResponseEntity(responseNotEmpty, HttpStatus.OK)
         else ResponseEntity(responseEmpty, HttpStatus.OK)
@@ -42,11 +43,12 @@ class ConcertsController(private val concertsRepository: ConcertsRepository) {
     @GetMapping("/genre")
     fun getConcertByGenre(@RequestParam(name = "genre") genre: String): ResponseEntity<ResponseAllConcerts> {
         val findGenre = concertsRepository.findConcertByGenreMusic(genre)
+        val count = findGenre.count()
         return if (findGenre.isNotEmpty()) {
-            val response = ResponseAllConcerts("Data yang anda cari", findGenre)
+            val response = ResponseAllConcerts("Data yang anda cari", count, findGenre)
             ResponseEntity(response, HttpStatus.OK)
         } else {
-            val response = ResponseAllConcerts("Sorry data not found")
+            val response = ResponseAllConcerts("Sorry data not found", count)
             ResponseEntity(response, HttpStatus.OK)
         }
 
