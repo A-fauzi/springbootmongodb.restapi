@@ -31,12 +31,15 @@ class ConcertsController(private val concertsRepository: ConcertsRepository) {
 
     @GetMapping("/{id}")
     fun getOneConcerts(@PathVariable("id") id: String) : ResponseEntity<ResponseConcerts> {
-        val concert = concertsRepository.findOneById(ObjectId(id))
+        return if (concertsRepository.existsById(id)) {
+            val concert = concertsRepository.findOneById(ObjectId(id))
+            val response = ResponseConcerts("Concert dengan id $id di temukan", concert)
+            ResponseEntity(response, HttpStatus.OK)
+        } else {
+            val responseNot = ResponseConcerts("Maaf Concert dengan id $id Tidak Di Temukan")
+            ResponseEntity(responseNot, HttpStatus.OK)
+        }
 
-        val response = ResponseConcerts("Concert dengan id $id di temukan", concert)
-        val responseNot = ResponseConcerts("Maaf Concert dengan id $id Tidak Di Temukan")
-
-        return ResponseEntity(response, HttpStatus.OK)
 
 
     }
@@ -61,25 +64,31 @@ class ConcertsController(private val concertsRepository: ConcertsRepository) {
     }
 
     @PutMapping("/{id}")
-    fun updateConcert(@RequestBody request: ConcertRequest, @PathVariable("id") id: String): ResponseEntity<Concert> {
-        val concert = concertsRepository.findOneById(ObjectId(id))
-        val updateConcert = concertsRepository.save(
-            Concert(
-                id = concert.id,
-                artist = request.artist,
-                imgThumbnail = request.imgThumbnail,
-                title = request.title,
-                description = request.description,
-                locationName = request.locationName,
-                locationCoordinate = request.locationCoordinate,
-                date = request.date,
-                time = request.time,
-                genreMusic = request.genreMusic,
-                createdDate = concert.createdDate,
-                modifiedDate = LocalDateTime.now()
+    fun updateConcert(@RequestBody request: ConcertRequest, @PathVariable("id") id: String): ResponseEntity<ResponseConcerts> {
+        if (concertsRepository.existsById(id)) {
+            val concert = concertsRepository.findOneById(ObjectId(id))
+            val updateConcert = concertsRepository.save(
+                Concert(
+                    id = concert.id,
+                    artist = request.artist,
+                    imgThumbnail = request.imgThumbnail,
+                    title = request.title,
+                    description = request.description,
+                    locationName = request.locationName,
+                    locationCoordinate = request.locationCoordinate,
+                    date = request.date,
+                    time = request.time,
+                    genreMusic = request.genreMusic,
+                    createdDate = concert.createdDate,
+                    modifiedDate = LocalDateTime.now()
+                )
             )
-        )
-        return ResponseEntity.ok(updateConcert)
+            val response = ResponseConcerts("Data Updated", updateConcert)
+            return ResponseEntity(response, HttpStatus.CREATED)
+        } else {
+            val response = ResponseConcerts("Sorry Concert Not Found")
+            return ResponseEntity(response, HttpStatus.NOT_FOUND)
+        }
     }
 
     @DeleteMapping("{id}")
