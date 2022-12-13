@@ -1,9 +1,7 @@
 package com.afatech.restapi.concerts
 
-import com.afatech.restapi.Utils
 import com.afatech.restapi.Utils.formattedDate
 import org.bson.types.ObjectId
-import org.jetbrains.annotations.NotNull
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.DeleteMapping
@@ -13,8 +11,8 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
-import java.time.LocalDateTime
 
 @RestController
 @RequestMapping("/concerts")
@@ -27,8 +25,6 @@ class ConcertsController(private val concertsRepository: ConcertsRepository) {
 
         return if (concert.isNotEmpty()) ResponseEntity(responseNotEmpty, HttpStatus.OK)
         else ResponseEntity(responseEmpty, HttpStatus.OK)
-
-
     }
 
     @GetMapping("/{id}")
@@ -41,8 +37,18 @@ class ConcertsController(private val concertsRepository: ConcertsRepository) {
             val responseNot = ResponseConcerts("Maaf Concert dengan id $id Tidak Di Temukan")
             ResponseEntity(responseNot, HttpStatus.OK)
         }
+    }
 
-
+    @GetMapping("/genre")
+    fun getConcertByGenre(@RequestParam(name = "genre") genre: String): ResponseEntity<ResponseAllConcerts> {
+        val findGenre = concertsRepository.findConcertByGenreMusic(genre)
+        return if (findGenre.isNotEmpty()) {
+            val response = ResponseAllConcerts("Data yang anda cari", findGenre)
+            ResponseEntity(response, HttpStatus.OK)
+        } else {
+            val response = ResponseAllConcerts("Sorry data not found")
+            ResponseEntity(response, HttpStatus.OK)
+        }
 
     }
 
