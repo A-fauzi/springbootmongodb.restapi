@@ -1,5 +1,7 @@
 package com.afatech.restapi.patient
 
+import com.afatech.restapi.Utils
+import com.afatech.restapi.Utils.formattedDate
 import org.bson.types.ObjectId
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -43,7 +45,7 @@ class PatientController(private val patientRepository: PatientRepository) {
                 name = request.name,
                 description = request.description,
                 createdDate = patient.createdDate,
-                modifiedDate = LocalDateTime.now()
+                modifiedDate = formattedDate
             )
         )
         return ResponseEntity.ok(updatePatient)

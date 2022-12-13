@@ -1,5 +1,6 @@
 package com.afatech.restapi.concerts
 
+import com.afatech.restapi.Utils
 import com.fasterxml.jackson.databind.annotation.JsonSerialize
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer
 import org.bson.types.ObjectId
@@ -19,7 +20,7 @@ data class Concert(
     val date: String,
     val time: String,
     val genreMusic: String,
-    val createdDate: LocalDateTime = LocalDateTime.now(),
-    val modifiedDate: LocalDateTime = LocalDateTime.now()
+    val createdDate: String? = Utils.formattedDate,
+    val modifiedDate: String? = Utils.formattedDate
 
 )

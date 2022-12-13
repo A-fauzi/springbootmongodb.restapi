@@ -1,5 +1,7 @@
 package com.afatech.restapi.users
 
+import com.afatech.restapi.Utils
+import com.afatech.restapi.Utils.formattedDate
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.DeleteMapping
@@ -66,7 +68,7 @@ class UserController(private val userRepository: UserRepository) {
                     email = request.email,
                     photoUrl = request.photoUrl,
                     createdDate = user.createdDate,
-                    modifiedDate = LocalDateTime.now()
+                    modifiedDate = formattedDate
                 )
             )
             val response = UserResponse("Data User Updated", updateUser)

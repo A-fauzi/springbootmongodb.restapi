@@ -1,5 +1,6 @@
 package com.afatech.restapi.users
 
+import com.afatech.restapi.Utils.formattedDate
 import org.springframework.data.annotation.Id
 import org.springframework.data.mongodb.core.mapping.Document
 import java.time.LocalDateTime
@@ -17,8 +18,8 @@ data class User(
 
     val photoUrl: String,
 
-    val createdDate: LocalDateTime = LocalDateTime.now(),
+    val createdDate: String? = formattedDate,
 
-    val modifiedDate: LocalDateTime = LocalDateTime.now()
+    val modifiedDate: String? = formattedDate
 
 )

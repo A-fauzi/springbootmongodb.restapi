@@ -1,5 +1,7 @@
 package com.afatech.restapi.concerts
 
+import com.afatech.restapi.Utils
+import com.afatech.restapi.Utils.formattedDate
 import org.bson.types.ObjectId
 import org.jetbrains.annotations.NotNull
 import org.springframework.http.HttpStatus
@@ -80,7 +82,7 @@ class ConcertsController(private val concertsRepository: ConcertsRepository) {
                     time = request.time,
                     genreMusic = request.genreMusic,
                     createdDate = concert.createdDate,
-                    modifiedDate = LocalDateTime.now()
+                    modifiedDate = formattedDate
                 )
             )
             val response = ResponseConcerts("Data Updated", updateConcert)

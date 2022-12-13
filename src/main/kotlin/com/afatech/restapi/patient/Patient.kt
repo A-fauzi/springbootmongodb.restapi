@@ -1,5 +1,7 @@
 package com.afatech.restapi.patient
 
+import com.afatech.restapi.Utils
+import com.afatech.restapi.Utils.formattedDate
 import com.fasterxml.jackson.databind.annotation.JsonSerialize
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer
 import org.bson.types.ObjectId
@@ -13,6 +15,6 @@ data class Patient(
     val id: ObjectId = ObjectId.get(),
     val name: String,
     val description: String,
-    val createdDate: LocalDateTime = LocalDateTime.now(),
-    val modifiedDate: LocalDateTime = LocalDateTime.now()
+    val createdDate: String? = formattedDate,
+    val modifiedDate: String? = formattedDate
 )
