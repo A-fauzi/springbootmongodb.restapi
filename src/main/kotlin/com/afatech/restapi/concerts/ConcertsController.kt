@@ -28,18 +28,6 @@ class ConcertsController(private val concertsRepository: ConcertsRepository) {
         else ResponseEntity(responseEmpty, HttpStatus.OK)
     }
 
-    @GetMapping("/{id}")
-    fun getOneConcerts(@PathVariable("id") id: String) : ResponseEntity<ResponseConcerts> {
-        return if (concertsRepository.existsById(id)) {
-            val concert = concertsRepository.findOneById(ObjectId(id))
-            val response = ResponseConcerts("Concert dengan id $id di temukan", concert)
-            ResponseEntity(response, HttpStatus.OK)
-        } else {
-            val responseNot = ResponseConcerts("Maaf Concert dengan id $id Tidak Di Temukan")
-            ResponseEntity(responseNot, HttpStatus.OK)
-        }
-    }
-
     @GetMapping("/genre")
     fun getConcertByGenre(@RequestParam(name = "genre") genre: String): ResponseEntity<ResponseAllConcerts> {
         val findGenre = concertsRepository.findConcertByGenreMusic(genre)
@@ -54,6 +42,26 @@ class ConcertsController(private val concertsRepository: ConcertsRepository) {
 
     }
 
+
+    @GetMapping("/artist")
+    fun getArtis(@RequestParam(name = "name") name: String): ResponseEntity<ResponseAllConcerts> {
+        val artis = concertsRepository.findByArtistRegex(name)
+        val count = artis.count()
+        val response = ResponseAllConcerts("Hasil pencarian", count, artis)
+        return ResponseEntity(response, HttpStatus.OK)
+    }
+
+    @GetMapping("/{id}")
+    fun getOneConcerts(@PathVariable("id") id: String) : ResponseEntity<ResponseConcerts> {
+        return if (concertsRepository.existsById(id)) {
+            val concert = concertsRepository.findOneById(ObjectId(id))
+            val response = ResponseConcerts("Concert dengan id $id di temukan", concert)
+            ResponseEntity(response, HttpStatus.OK)
+        } else {
+            val responseNot = ResponseConcerts("Maaf Concert dengan id $id Tidak Di Temukan")
+            ResponseEntity(responseNot, HttpStatus.OK)
+        }
+    }
     @PostMapping
     fun createConcert(@RequestBody request: ConcertRequest): ResponseEntity<ResponseConcerts> {
         val concert = concertsRepository.save(
