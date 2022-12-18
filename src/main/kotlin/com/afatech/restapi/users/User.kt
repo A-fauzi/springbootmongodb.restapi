@@ -18,6 +18,12 @@ data class User(
 
     val photoUrl: String,
 
+    val gender: String,
+
+    val title: String,
+
+    val description: String,
+
     val createdDate: String? = formattedDate,
 
     val modifiedDate: String? = formattedDate

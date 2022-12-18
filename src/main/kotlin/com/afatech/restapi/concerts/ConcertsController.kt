@@ -21,8 +21,8 @@ class ConcertsController(private val concertsRepository: ConcertsRepository) {
     fun getAllConcert(): ResponseEntity<ResponseAllConcerts> {
         val concert = concertsRepository.findAll()
         val count = concert.count()
-        val responseNotEmpty  = ResponseAllConcerts("Success Get Data", count,concert)
-        val responseEmpty  = ResponseAllConcerts("Sorry Data Is Empty", count)
+        val responseNotEmpty = ResponseAllConcerts("Success Get Data", count, concert)
+        val responseEmpty = ResponseAllConcerts("Sorry Data Is Empty", count)
 
         return if (concert.isNotEmpty()) ResponseEntity(responseNotEmpty, HttpStatus.OK)
         else ResponseEntity(responseEmpty, HttpStatus.OK)
@@ -52,7 +52,7 @@ class ConcertsController(private val concertsRepository: ConcertsRepository) {
     }
 
     @GetMapping("/{id}")
-    fun getOneConcerts(@PathVariable("id") id: String) : ResponseEntity<ResponseConcerts> {
+    fun getOneConcerts(@PathVariable("id") id: String): ResponseEntity<ResponseConcerts> {
         return if (concertsRepository.existsById(id)) {
             val concert = concertsRepository.findOneById(ObjectId(id))
             val response = ResponseConcerts("Concert dengan id $id di temukan", concert)
@@ -62,6 +62,7 @@ class ConcertsController(private val concertsRepository: ConcertsRepository) {
             ResponseEntity(responseNot, HttpStatus.OK)
         }
     }
+
     @PostMapping
     fun createConcert(@RequestBody request: ConcertRequest): ResponseEntity<ResponseConcerts> {
         val concert = concertsRepository.save(
@@ -70,19 +71,23 @@ class ConcertsController(private val concertsRepository: ConcertsRepository) {
                 title = request.title,
                 description = request.description,
                 locationName = request.locationName,
-                locationCoordinate = request.locationCoordinate,
+                latitude = request.latitude,
                 date = request.date,
                 time = request.time,
                 genreMusic = request.genreMusic,
-                imgThumbnail = request.imgThumbnail
+                imgThumbnail = request.imgThumbnail,
+                longitude = request.longitude
             )
         )
-        val response  = ResponseConcerts("Data Created", concert)
+        val response = ResponseConcerts("Data Created", concert)
         return ResponseEntity(response, HttpStatus.CREATED)
     }
 
     @PutMapping("/{id}")
-    fun updateConcert(@RequestBody request: ConcertRequest, @PathVariable("id") id: String): ResponseEntity<ResponseConcerts> {
+    fun updateConcert(
+        @RequestBody request: ConcertRequest,
+        @PathVariable("id") id: String
+    ): ResponseEntity<ResponseConcerts> {
         if (concertsRepository.existsById(id)) {
             val concert = concertsRepository.findOneById(ObjectId(id))
             val updateConcert = concertsRepository.save(
@@ -93,7 +98,8 @@ class ConcertsController(private val concertsRepository: ConcertsRepository) {
                     title = request.title,
                     description = request.description,
                     locationName = request.locationName,
-                    locationCoordinate = request.locationCoordinate,
+                    latitude = request.latitude,
+                    longitude = request.longitude,
                     date = request.date,
                     time = request.time,
                     genreMusic = request.genreMusic,

@@ -9,5 +9,11 @@ class UserRequest(
 
     val email: String,
 
-    val photoUrl: String
+    val photoUrl: String,
+
+    val gender: String,
+
+    val title: String,
+
+    val description: String
 )
