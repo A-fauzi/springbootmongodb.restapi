@@ -52,7 +52,10 @@ class UserController(private val userRepository: UserRepository) {
                 photoUrl = request.photoUrl,
                 gender = request.gender,
                 title = request.title,
-                description = request.description
+                description = request.description,
+                pathStorageProfile = request.pathStorageProfile,
+                followers = request.followers,
+                following = request.following
             )
         )
         val response = UserResponse("Data User Created", user)
@@ -74,7 +77,10 @@ class UserController(private val userRepository: UserRepository) {
                     modifiedDate = formattedDate,
                     gender = request.gender,
                     title = request.title,
-                    description = request.description
+                    description = request.description,
+                    pathStorageProfile = request.pathStorageProfile,
+                    followers = request.followers,
+                    following = request.following
                 )
             )
             val response = UserResponse("Data User Updated", updateUser)

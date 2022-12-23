@@ -16,13 +16,18 @@ data class User(
 
     val email: String,
 
-    val photoUrl: String,
+    val photoUrl: String? = null,
 
     val gender: String,
 
-    val title: String,
+    val title: String? = null,
 
-    val description: String,
+    val followers: List<User>? = null,
+    val following: List<User>? = null,
+
+    val description: String? = null,
+
+    val pathStorageProfile: String? = null,
 
     val createdDate: String? = formattedDate,
 

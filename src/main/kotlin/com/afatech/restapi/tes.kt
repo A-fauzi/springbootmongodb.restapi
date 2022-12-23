@@ -6,5 +6,22 @@ import java.time.format.DateTimeFormatter
 import java.util.*
 
 fun main() {
-    println("Hello")
+    println(Tes().coba)
+}
+
+class Tes() {
+
+
+    var value = "cinta"
+    fun functionSatu2() {
+        value = "Assignment"
+    }
+
+    fun functionSatu() {
+        println(value)
+    }
+
+    val coba = value
+
+
 }
